@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bellevue College Class Monitor</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    </head>
+    <body class="container">
+      <script>
+        function removeRow(e) {
+          e.target.parentElement.parentElement.remove();
+        }
+
+        function addRow(e) {
+          let newRow = document.createElement("TR");
+          let index = document.querySelector("#classFormTBody").children.length;
+          newRow.innerHTML = "<td><input class='form-control' type='text' name='CLASSNAME_" + index + "' placeholder='Name' required></td><td><input class='form-control' type='text' name='CLASSID_" + index + "' placeholder='ID' required></td><td><button class='btn btn-sm btn-danger' onclick='removeRow(event); return false;'>X</button></td>"
+          document.querySelector("#classFormTBody").appendChild(newRow);
+        }
+      </script>
+        <div class="row">
+            <div class="col text-center py-3">
+                <p class="h1">Bellevue College Class Monitor</p>
+            </div>
+        </div>
+        <div class="row py-3">
+            <form class="col" method="POST" action="/updateConfig">
+                <p class="h4 text-center">Update Configuration</p>
+                <label class="text-center h5 w-100 my-1">
+                    Quarter Name
+                </label>
+                <input class="form-control" type="text" name="quarter_name" value="{{ quarterName }}" required>
+                <label class="text-center h5 w-100 my-1">
+                    Classes to Check
+                </label>
+                <table class="table my-1">
+                  <thead>
+                    <tr>
+                      <th>Class Name</th>
+                      <th>Item #</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="classFormTBody">
+                      {{ classesHTML|safe }}
+                  </tbody>
+                </table>
+                <button class="btn btn-primary btn-sm w-100 py-1" onclick="addRow(event); return false;">Add Row</button>
+                <button class="form-control btn btn-success py-1">Update</button>
+            </form>
+        </div>
+        <hr>
+        <div class="row py-3">
+            <div class="col text-center">
+                <p class="m-0 py-2 h4">Class Status</p>
+                <p class="py-1 text-muted">Updated as of {{ timestamp }}</p>
+                <hr class="w-50">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Class Name</th>
+                      <th>Item #</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ classesStatusHTML|safe }}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
